@@ -40,4 +40,6 @@ public class CategoryController {
         category.setId(id);
         return categoryRepository.save(category);
     }
+
+    //todo: impl PATCH endpoint
 }
