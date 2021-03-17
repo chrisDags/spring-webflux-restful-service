@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+//todo: Refactor business logic and repository calls into services for both controller classes
+
 @RestController
 public class CategoryController {
 

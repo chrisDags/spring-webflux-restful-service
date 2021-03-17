@@ -13,7 +13,10 @@ import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 class VendorControllerTest {
 
@@ -92,4 +95,43 @@ class VendorControllerTest {
                 .expectStatus()
                 .isOk();
     }
+    @Test
+    public void testPatch(){
+        given(vendorRepository.findById(anyString()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        given(vendorRepository.save(any(Vendor.class)))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        Mono<Vendor> vendorMonoToUpdate = Mono.just(Vendor.builder().lastName("last name").firstName("first name").build());
+
+        webTestClient.patch()
+                .uri("/api/v1/vendors/abcdefg")
+                .body(vendorMonoToUpdate, Vendor.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        verify(vendorRepository).save(any());
+    }
+
+    @Test
+    public void testPatchNoChange(){
+        given(vendorRepository.findById(anyString()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        given(vendorRepository.save(any(Vendor.class)))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        Mono<Vendor> vendorMonoToUpdate = Mono.just(Vendor.builder().build());
+
+        webTestClient.patch()
+                .uri("/api/v1/vendors/abcdefg")
+                .body(vendorMonoToUpdate, Vendor.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+        verify(vendorRepository, never()).save(any());
+    }
+
 }
