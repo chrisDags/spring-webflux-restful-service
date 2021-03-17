@@ -28,7 +28,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @DisplayName("findAll() Test")
+    @DisplayName("CategoryControllerTest - findAll() Test")
     void list() {
         BDDMockito.given(categoryRepository.findAll())
         .willReturn(Flux.just(Category.builder().description("Cat1").build(),
@@ -41,7 +41,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @DisplayName("getById() Test")
+    @DisplayName("CategoryControllerTest - getById() Test")
     void getById() {
         BDDMockito.given(categoryRepository.findById("someId"))
                 .willReturn(Mono.just(Category.builder().description("Cat").build()));
